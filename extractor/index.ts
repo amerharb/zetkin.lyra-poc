@@ -1,15 +1,19 @@
 import simpleGit from 'simple-git';
 
-const MSG_FILE = 'src/features/smartSearch/l10n/messageIds.ts';
+const MSG_FILE = 'src/features/profile/l10n/messageIds.ts';
 const PATH = process.argv[2];
 
 import moduleAlias from 'module-alias';
+import getFlatMessages from './lib/getFlatMessages';
+
+
 moduleAlias.addPath('../mock-repo/src');
 
 (async () => {
   const git = simpleGit({
     baseDir: PATH,
   });
+  await git.checkout('main');
   const commits = await git.log([MSG_FILE]);
   const history = commits.all
     .concat()
@@ -27,6 +31,10 @@ moduleAlias.addPath('../mock-repo/src');
     const modulePath = PATH + MSG_FILE;
     const messageIdsImport = await import(modulePath);
     const messageIds = messageIdsImport.default;
-    console.log(messageIds);
+
+    const messages = Array.from(getFlatMessages(messageIds));
+    console.log(messages);
   }
+
+  await git.checkout('main');
 })();
