@@ -1,0 +1,17 @@
+@startuml lyra-sequence
+
+actor dev as "Developer"
+database git as "GitHub"
+participant lyra as "Lyra"
+actor trans as "Translator"
+
+
+dev -> git: Commits messageIds
+git -> lyra: Extract messages
+lyra -> trans: Notify of new strings
+lyra <- trans: Translate strings
+git <- lyra: Make commits & create PR
+dev -> git: Merge PR
+
+
+@enduml
