@@ -1,20 +1,4 @@
-
-type MessageID = {
-  id: string;
-  defaultText: string;
-  updatedAt: Date;
-  updatedByCommit: string;
-}
-
-type InputMessage = {
-  _defaultMessage: string;
-  _id: string;
-};
-
-interface MessageMap {
-  [key: string]: MessageMap | InputMessage;
-}
-const messages: MessageID[] = [];
+import { InputMessage, MessageMap } from "./types";
 
 export default function* getFlatMessages(map: MessageMap): Iterable<InputMessage> {
   for (const key in map) {
